@@ -13,8 +13,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("MONGO_URI").then(()=> {
+mongoose.connect(MONGO_URI).then(()=> {
     console.log("Connected to MongoDB");
 }).catch((error) => {
     console.log("Problem with connecting to database" + error);
 });
+
+// Startar upp
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
