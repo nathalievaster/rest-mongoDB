@@ -71,3 +71,21 @@ app.put("/experiences/:id", async (req, res) => {
       res.status(400).json({ message: error.message });
     }
   });
+
+  // Tar bort en erfarenhet baserat på ID
+app.delete("/experiences/:id", async (req, res) => {
+    const { id } = req.params; // Hämtar ID från URL:en
+  
+    try {
+      // Hitta dokumentet med ID och ta bort det
+      const deletedExperience = await Experience.findByIdAndDelete(id);
+  
+      if (!deletedExperience) {
+        return res.status(404).json({ message: "Erfarenhet hittades inte" });
+      }
+  
+      res.json({ message: "Erfarenhet borttagen", data: deletedExperience });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
