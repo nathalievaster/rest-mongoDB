@@ -40,13 +40,34 @@ app.get("/experiences", async(req, res) => {
 });
 
 app.post("/experiences", async (req, res) => {
-    console.log("Received POST request with body:", req.body);  // Debugging logg
     try {
         const newExperience = new Experience(req.body);
         const savedExperience = await newExperience.save();
         res.status(201).json(savedExperience);
     } catch (error) {
-        console.log("Error:", error);  // Loggar felet för felsökning
         res.status(400).json({ message: error.message });
     }
 });
+
+// Uppdaterar en erfarenhet baserat på ID
+app.put("/experiences/:id", async (req, res) => {
+    const { id } = req.params; // Hämtar ID från URL:en
+    const updatedData = req.body; // Ny data som skickas i request body
+  
+    try {
+      // Hitta dokumentet via ID och uppdatera det med ny data
+      const updatedExperience = await Experience.findByIdAndUpdate(
+        id,
+        updatedData,
+        { new: true, runValidators: true } // new: returnera uppdaterade dokumentet, runValidators: validera ny data
+      );
+  
+      if (!updatedExperience) {
+        return res.status(404).json({ message: "Erfarenhet hittades inte" });
+      }
+  
+      res.json(updatedExperience); // Skicka tillbaka det uppdaterade dokumentet
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  });

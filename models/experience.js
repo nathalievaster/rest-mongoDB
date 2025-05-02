@@ -3,17 +3,17 @@ const mongoose = require("mongoose");
 const experienceSchema = new mongoose.Schema({
     company: {
         type: String,
-        required: true,
+        required: [true, "Du måste fylla i företagsnamn"],
         trim: true
       },
       position: {
         type: String,
-        required: true,
+        required: [true, "Du måste fylla i arbetsroll"],
         trim: true
       },
       startDate: {
         type: Date,
-        required: true
+        required: [true, "Du måste fylla i när du började jobba där"],
       },
       endDate: {
         type: Date,
