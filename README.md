@@ -22,8 +22,9 @@ Detta är ett REST API byggt med Node.js, Express och MongoDB som hanterar arbet
 2. Installera beroenden: 
 
    ```
- npm install cors express dotenv mongoose
- npm install nodemon --save-dev
+   npm install cors express dotenv mongoose
+   npm install nodemon --save-dev
+   ```
 
 
 3. Skapa en `.env`-fil i root-mappen och lägg till:
