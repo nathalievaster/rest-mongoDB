@@ -14,20 +14,20 @@ Detta är ett REST API byggt med Node.js, Express och MongoDB som hanterar arbet
 
 1. Klona detta repo:
 
-   ```bash
+   ```
    git clone https://github.com/nathalievaster/rest-mongoDB.git
    cd rest_mongodb
    ```
 
 2. Installera beroenden: 
 
-   ```bash
+   ```
  npm install cors express dotenv mongoose
  npm install nodemon --save-dev
- 
+
 
 3. Skapa en `.env`-fil i root-mappen och lägg till:
-```bash
+```
 MONGO_URI=mongodb://localhost:27017/experiencesDB PORT=3000
 ```
 
