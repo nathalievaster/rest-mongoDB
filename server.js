@@ -14,40 +14,46 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(MONGO_URI).then(()=> {
-    console.log("Connected to MongoDB");
-}).catch((error) => {
-    console.log("Problem with connecting to database" + error);
-});
-
-// Startar upp
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Anslut till MongoDB med URI från miljövariabler
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log("Connected to MongoDB"); // Lyckad anslutning
+  })
+  .catch((error) => {
+    console.log("Problem with connecting to database: " + error); // Fel vid anslutning
   });
 
-app.get("/api", async(req, res) => {
-    res.json({message: "Welcome to this Api"});
+// Starta Express-servern på angiven port
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-app.get("/experiences", async(req, res) => {
-    try {
-        let result = await Experience.find();
-
-        return res.json(result);
-    } catch(error) {
-        return res.status(500).json(error);
-    }
+// Test-endpoint för att visa att API:et fungerar
+app.get("/api", async (req, res) => {
+  res.json({ message: "Welcome to this Api" });
 });
 
+// Hämta alla erfarenheter från databasen
+app.get("/experiences", async (req, res) => {
+  try {
+    let result = await Experience.find(); // Hämta alla dokument i collectionen
+    return res.json(result); // Skicka datan som JSON
+  } catch (error) {
+    return res.status(500).json(error); // Vid fel, skicka status 500 (serverfel)
+  }
+});
+
+// Skapa en ny erfarenhet i databasen
 app.post("/experiences", async (req, res) => {
-    try {
-        const newExperience = new Experience(req.body);
-        const savedExperience = await newExperience.save();
-        res.status(201).json(savedExperience);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+  try {
+    const newExperience = new Experience(req.body); // Skapa ny instans med request-body
+    const savedExperience = await newExperience.save(); // Spara till databasen
+    res.status(201).json(savedExperience); // Skicka tillbaka den sparade posten med 201 Created
+  } catch (error) {
+    res.status(400).json({ message: error.message }); // Vid fel, skicka status 400 (bad request)
+  }
 });
+
 
 // Uppdaterar en erfarenhet baserat på ID
 app.put("/experiences/:id", async (req, res) => {
